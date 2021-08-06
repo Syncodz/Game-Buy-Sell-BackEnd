@@ -4,7 +4,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'user'
+  database: 'game2game'
 });
 
 module.exports = connection;
