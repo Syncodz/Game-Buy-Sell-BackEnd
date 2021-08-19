@@ -1,7 +1,8 @@
 'use strict';
 
 var tUser = require('../model/tempUserModel');
-var user = require('../model/userModel')
+var user = require('../model/userModel');
+var vUser = require('../model/verifyUserModel');
 
 exports.create_temp_user = function (req, res) {
     var newTempUser = new tUser(req.body);
@@ -76,5 +77,22 @@ exports.change_email = function (req, res) {
             res.send(err);
         console.log('res', task);
         res.send(task);
+    });
+};
+
+exports.verify_code = function (req, res) {
+    var details = new vUser(req.body);
+    vUser.findByEmail(details, function (err, task) {
+
+        console.log('controller')
+        if (err) {
+            res.send(err);
+        } else {
+            if (task[0].validation_code===details.validation_code) {
+                res.send('Email Verified');
+            } else {
+                res.send('Invalid Code');
+            }
+        }
     });
 };

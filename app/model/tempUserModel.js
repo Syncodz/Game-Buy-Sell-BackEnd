@@ -5,10 +5,10 @@ var sql = require('./db.js');
 
 //let testAccount = await nodemailer.createTestAccount();
 
-const CLIENT_ID = '1039702550244-nkqup027vihav8ommu464kird5ttmbac.apps.googleusercontent.com'
-const CLIENT_SECRET = 'Nr9MK6YRvZsBGqwc5PBX6ldM'
+const CLIENT_ID = '973589340908-8mkefefvku27t4o6hjgu3eghlgirtcis.apps.googleusercontent.com'
+const CLIENT_SECRET = '9m3tj2cPAnSutyBoim8tKELE'
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground'
-const REFRESH_TOKEN = '1//04AE6wUndZ1KoCgYIARAAGAQSNwF-L9IrY9rtjMV9qDNCsVSiiBXsW50m8dlFKlmnnyJXYUuisdWJGum5kIdFcONdO2YZxhJh8ws'
+const REFRESH_TOKEN = '1//04d-tkfDsgg04CgYIARAAGAQSNwF-L9IrysC4WQNWC3ME1MfaketCNetsnJjbP8XpQyoG4YusWEMAIKXj3_eg5I58_Tk4jvKVBMs'
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
@@ -93,7 +93,7 @@ async function sendEmail(tempUser) {
             host: 'smtp.gmail.com',
             auth: {
                 type: 'OAuth2',
-                user: 'hello.syncodz@gmail.com',
+                user: 'help.gamegamuthe@gmail.com',
                 clientId: CLIENT_ID,
                 clientSecret: CLIENT_SECRET,
                 refreshToken: REFRESH_TOKEN,
@@ -102,9 +102,9 @@ async function sendEmail(tempUser) {
         });
 
         let info = await transporter.sendMail({
-            from: 'SynCODZ <hello.syncodz@gmail.com>',
+            from: 'GameGamuthe <help.gamegamuthe@gmail.com>',
             to: tempUser.email,
-            subject: 'Game to Game Confirmation',
+            subject: 'Email Verification',
             text: 'Your Confirmation Code is ' + tempUser.validation_code,
 
         });
