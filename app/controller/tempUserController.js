@@ -89,8 +89,10 @@ exports.verify_code = function (req, res) {
             res.send(err);
         } else {
             if (task[0].validation_code===details.validation_code) {
+                res.status(200);
                 res.send('Email Verified');
             } else {
+                res.status(201);
                 res.send('Invalid Code');
             }
         }
