@@ -1,7 +1,9 @@
 'use strict';
 module.exports = function (app) {
-    var tempUser = require('../controller/tempUserController');
-    var user = require('../controller/userController');
+    const tempUser = require('../controller/tempUserController');
+    const user = require('../controller/userController');
+    const ad = require('../controller/adsController');
+    const authorize =require('../middleware/authorize');
 
     // sms Routes
     app.route('/api/tempuser')
@@ -17,5 +19,8 @@ module.exports = function (app) {
         .post(user.create_user);
     app.route('/api/login')
         .post(user.login);
+
+    app.route('/api/adpost')
+        .post(authorize, ad.create_ad);
 
 };
