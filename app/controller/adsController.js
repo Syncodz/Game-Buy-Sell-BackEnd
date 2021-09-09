@@ -3,9 +3,29 @@ const jwt = require("jsonwebtoken");
 
 const ad = require('../model/adsModel');
 const { secret } =require("../../config.json")
+const { TokenExpiredError } = jwt;
 
 exports.create_ad = async function (req, res) {
-    let token = req.headers["x-access-token"];
+    // let token = req.headers["x-access-token"];
+    const bearerHeader = req.headers['authorization'];
+    var token = "";
+    if (!bearerHeader) {
+        return res.status(403).send({ message: "No token provided!" });
+      } else {
+        const bearer = bearerHeader.split(' ');
+        token = bearer[1];
+      }
+    
+      if (token == "") {
+        return res.status(403).send({ message: "No token provided!" });
+      }
+    const catchError = (err, res) => {
+        if (err instanceof TokenExpiredError) {
+          return res.status(401).send({ message: "Unauthorized! Access Token was expired!" });
+        }
+      
+        return res.sendStatus(401).send({ message: "Unauthorized!" });
+      }
 
     var uId = 0;
     var categoryId = 0;

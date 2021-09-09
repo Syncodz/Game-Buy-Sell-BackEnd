@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { secret } =require("../../config.json")
+const { secret } = require("../../config.json")
 
 const { TokenExpiredError } = jwt;
 
@@ -12,20 +12,29 @@ const catchError = (err, res) => {
 }
 
 const verifyToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
-  
-    if (!token) {
-      return res.status(403).send({ message: "No token provided!" });
-    }
-  
-    jwt.verify(token,secret, (err, decoded) => {
-      if (err) {
-        return catchError(err, res);
-      }
-      req.user = decoded;
-      console.log(decoded)
-      next();
-    });
-  };
 
-  module.exports = verifyToken;
+  const bearerHeader = req.headers['authorization'];
+  var token = "";
+
+  if (!bearerHeader) {
+    return res.status(403).send({ message: "No token provided!" });
+  } else {
+    const bearer = bearerHeader.split(' ');
+    token = bearer[1];
+  }
+
+  if (token == "") {
+    return res.status(403).send({ message: "No token provided!" });
+  }
+
+  jwt.verify(token, secret, (err, decoded) => {
+    if (err) {
+      return catchError(err, res);
+    }
+    req.user = decoded;
+    console.log(decoded)
+    next();
+  });
+};
+
+module.exports = verifyToken;
