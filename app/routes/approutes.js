@@ -3,7 +3,7 @@ module.exports = function (app) {
     const tempUser = require('../controller/tempUserController');
     const user = require('../controller/userController');
     const ad = require('../controller/adsController');
-    const authorize =require('../middleware/authorize');
+    const authorize = require('../middleware/authorize');
 
     // sms Routes
     app.route('/api/tempuser')
@@ -22,5 +22,8 @@ module.exports = function (app) {
 
     app.route('/api/adpost')
         .post(authorize, ad.create_ad);
+
+    app.route('/api/view/:id')
+        .get(ad.view_ad);
 
 };

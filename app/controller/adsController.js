@@ -81,3 +81,14 @@ exports.create_ad = async function (req, res) {
         }
     });
 };
+
+exports.view_ad = function (req,res){
+    ad.findById(req.params.id, function(err,task){
+        if(err){
+            res.status(500);
+            res.send(err);
+        } else {
+            res.status(200).send(task);
+        }
+    })
+}
