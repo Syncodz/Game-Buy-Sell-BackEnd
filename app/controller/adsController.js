@@ -2,7 +2,7 @@
 const jwt = require("jsonwebtoken");
 
 const ad = require('../model/adsModel');
-const { secret } =require("../../config.json")
+const { secret } = require("../../config.json")
 const { TokenExpiredError } = jwt;
 
 exports.create_ad = async function (req, res) {
@@ -11,21 +11,21 @@ exports.create_ad = async function (req, res) {
     var token = "";
     if (!bearerHeader) {
         return res.status(403).send({ message: "No token provided!" });
-      } else {
+    } else {
         const bearer = bearerHeader.split(' ');
         token = bearer[1];
-      }
-    
-      if (token == "") {
+    }
+
+    if (token == "") {
         return res.status(403).send({ message: "No token provided!" });
-      }
+    }
     const catchError = (err, res) => {
         if (err instanceof TokenExpiredError) {
-          return res.status(401).send({ message: "Unauthorized! Access Token was expired!" });
+            return res.status(401).send({ message: "Unauthorized! Access Token was expired!" });
         }
-      
+
         return res.sendStatus(401).send({ message: "Unauthorized!" });
-      }
+    }
 
     var uId = 0;
     var categoryId = 0;
@@ -51,23 +51,30 @@ exports.create_ad = async function (req, res) {
     if (arr[4] !== null) {
         image5 = arr[4];
     }
-    if (req.body.category == 'PUBG Mobile') {
+    if (req.body.category == 'Pubg') {
         categoryId = 1;
-    } else if (req.body.category == 'Valorant') {
+    } else if (req.body.category == 'Call of Duty') {
         categoryId = 2;
-    } else if (req.body.category == 'COC') {
+    } else if (req.body.category == 'Free Fire') {
         categoryId = 3;
-    } else {
+    } else if (req.body.category == 'Clash of Clans') {
         categoryId = 4;
+    } else if (req.body.category == 'Valorant') {
+        categoryId = 5;
+    } else if (req.body.category == 'Dota') {
+        categoryId = 6;
+    }
+    else {
+        categoryId = 7;
     }
 
-    await jwt.verify(token,secret, (err1, decoded) => {
+    await jwt.verify(token, secret, (err1, decoded) => {
         if (err1) {
-          return catchError(err1, res);
+            return catchError(err1, res);
         }
         uId = decoded.user_id;
-        email =decoded.user_email;
-      });
+        email = decoded.user_email;
+    });
 
     var newAd = new ad(uId, categoryId, req.body.title, req.body.description, req.body.price, req.body.contactNumber, email, image1,
         image2, image3, image4, image5);
@@ -82,9 +89,9 @@ exports.create_ad = async function (req, res) {
     });
 };
 
-exports.view_ad = function (req,res){
-    ad.findById(req.params.id, function(err,task){
-        if(err){
+exports.view_ad = function (req, res) {
+    ad.findById(req.params.id, function (err, task) {
+        if (err) {
             res.status(500);
             res.send(err);
         } else {
